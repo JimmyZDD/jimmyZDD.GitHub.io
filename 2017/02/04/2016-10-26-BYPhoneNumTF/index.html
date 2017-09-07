@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,轮子," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="BYPhoneNumTF 一个电话号码格式的文本框  功能当在TextField输入数字时，会自动分隔为：137 9922 2299 或 137-9922-2299 限制文本输入个数 限制只能输入数字 效果： 实现方法要实现电话号码格式的输入看似简单，但是实现起来坑非常多，至于坑是什么只有各位动手写了才能体会~ 下面我们来实现该功能： 首先要遵守协议&amp;lt;UITextFieldDelegate">
+<meta name="keywords" content="iOS,轮子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BYPhoneNumTF">
+<meta property="og:url" content="http://yoursite.com/2017/02/04/2016-10-26-BYPhoneNumTF/index.html">
+<meta property="og:site_name" content="Jimmy&#39;Zone">
+<meta property="og:description" content="BYPhoneNumTF 一个电话号码格式的文本框  功能当在TextField输入数字时，会自动分隔为：137 9922 2299 或 137-9922-2299 限制文本输入个数 限制只能输入数字 效果： 实现方法要实现电话号码格式的输入看似简单，但是实现起来坑非常多，至于坑是什么只有各位动手写了才能体会~ 下面我们来实现该功能： 首先要遵守协议&amp;lt;UITextFieldDelegate">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/7853084cgw1fa3cqnu8s2g207i0dc4qp.gif">
+<meta property="og:updated_time" content="2017-09-05T08:54:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BYPhoneNumTF">
+<meta name="twitter:description" content="BYPhoneNumTF 一个电话号码格式的文本框  功能当在TextField输入数字时，会自动分隔为：137 9922 2299 或 137-9922-2299 限制文本输入个数 限制只能输入数字 效果： 实现方法要实现电话号码格式的输入看似简单，但是实现起来坑非常多，至于坑是什么只有各位动手写了才能体会~ 下面我们来实现该功能： 首先要遵守协议&amp;lt;UITextFieldDelegate">
+<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/7853084cgw1fa3cqnu8s2g207i0dc4qp.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.2',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/04/2016-10-26-BYPhoneNumTF/"/>
+
+
+
+
+
+  <title>BYPhoneNumTF | Jimmy'Zone</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jimmy'Zone</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">态度决定一切，细节决定成败</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/04/2016-10-26-BYPhoneNumTF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JimmyZhao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jimmy'Zone">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">BYPhoneNumTF</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-04T00:00:00+08:00">
+                2017-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p><strong>BYPhoneNumTF</strong> 一个电话号码格式的文本框</p>
+</blockquote>
+<h1 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h1><p>当在<code>TextField</code>输入数字时，会自动分隔为：137 9922 2299 或 137-9922-2299</p>
+<p>限制文本输入个数</p>
+<p>限制只能输入数字</p>
+<h1 id="效果："><a href="#效果：" class="headerlink" title="效果："></a>效果：</h1><p><img src="http://ww2.sinaimg.cn/large/7853084cgw1fa3cqnu8s2g207i0dc4qp.gif" alt=""></p>
+<h1 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h1><p>要实现电话号码格式的输入看似简单，但是实现起来坑非常多，至于坑是什么只有各位动手写了才能体会~</p>
+<p>下面我们来实现该功能：</p>
+<p>首先要遵守协议<code>&lt;UITextFieldDelegate&gt;</code></p>
+<p>然后在<code>- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string</code> 方法中实现我们的逻辑</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div></pre></td><td class="code"><pre><div class="line">#import &quot;LoginVC.h&quot;</div><div class="line"></div><div class="line">#define placeholder @&quot; &quot;</div><div class="line"></div><div class="line">@interface LoginVC () &lt;UITextFieldDelegate&gt;</div><div class="line"></div><div class="line">@property (weak, nonatomic) IBOutlet UITextField *phoneNumberTF;</div><div class="line"></div><div class="line">@end</div><div class="line"></div><div class="line"></div><div class="line">- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string &#123;</div><div class="line"></div><div class="line">    NSString *phStr = placeholder;</div><div class="line">    unichar phChar = &apos; &apos;;</div><div class="line">    if (phStr.length) &#123;</div><div class="line">        phChar = [phStr characterAtIndex:0];</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    if (textField) &#123;</div><div class="line">        NSString* text = textField.text;</div><div class="line">        //删除</div><div class="line">        if([string isEqualToString:@&quot;&quot;])&#123;</div><div class="line">            </div><div class="line">            //删除一位</div><div class="line">            if(range.length == 1)&#123;</div><div class="line">                //最后一位,遇到空格则多删除一次</div><div class="line">                if (range.location == text.length - 1 ) &#123;</div><div class="line">                    if ([text characterAtIndex:text.length - 1] == phChar) &#123;</div><div class="line">                        [textField deleteBackward];</div><div class="line">                    &#125;</div><div class="line">                    return YES;</div><div class="line">                &#125;</div><div class="line">                //从中间删除</div><div class="line">                else&#123;</div><div class="line">                    NSInteger offset = range.location;</div><div class="line">                    </div><div class="line">                    if (range.location &lt; text.length &amp;&amp; [text characterAtIndex:range.location] == phChar &amp;&amp; [textField.selectedTextRange isEmpty]) &#123;</div><div class="line">                        [textField deleteBackward];</div><div class="line">                        offset --;</div><div class="line">                    &#125;</div><div class="line">                    [textField deleteBackward];</div><div class="line">                    textField.text = [self _parseString:textField.text];</div><div class="line">                    UITextPosition *newPos = [textField positionFromPosition:textField.beginningOfDocument offset:offset];</div><div class="line">                    textField.selectedTextRange = [textField textRangeFromPosition:newPos toPosition:newPos];</div><div class="line">                    return NO;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            else if (range.length &gt; 1) &#123;</div><div class="line">                BOOL isLast = NO;</div><div class="line">                //如果是从最后一位开始</div><div class="line">                if(range.location + range.length == textField.text.length )&#123;</div><div class="line">                    isLast = YES;</div><div class="line">                &#125;</div><div class="line">                [textField deleteBackward];</div><div class="line">                textField.text = [self _parseString:textField.text];</div><div class="line">                </div><div class="line">                NSInteger offset = range.location;</div><div class="line">                if (range.location == 3 || range.location  == 8) &#123;</div><div class="line">                    offset ++;</div><div class="line">                &#125;</div><div class="line">                if (isLast) &#123;</div><div class="line">                    //光标直接在最后一位了</div><div class="line">                &#125;else&#123;</div><div class="line">                    UITextPosition *newPos = [textField positionFromPosition:textField.beginningOfDocument offset:offset];</div><div class="line">                    textField.selectedTextRange = [textField textRangeFromPosition:newPos toPosition:newPos];</div><div class="line">                &#125;</div><div class="line">                </div><div class="line">                return NO;</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            else&#123;</div><div class="line">                return YES;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        else if(string.length &gt;0)&#123;</div><div class="line">            </div><div class="line">            //限制输入字符个数</div><div class="line">            if (([self _noneSpaseString:textField.text].length + string.length - range.length &gt; 11) ) &#123;</div><div class="line">                return NO;</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            //判断是否是纯数字(搜狗，百度输入法，数字键盘居然可以输入其他字符)</div><div class="line">            if(![self _isNum:string])&#123;</div><div class="line">                return NO;</div><div class="line">            &#125;</div><div class="line">            [textField insertText:string];</div><div class="line">            textField.text = [self _parseString:textField.text];</div><div class="line">            </div><div class="line">            NSInteger offset = range.location + string.length;</div><div class="line">            if (range.location == 3 || range.location  == 8) &#123;</div><div class="line">                offset ++;</div><div class="line">            &#125;</div><div class="line">            UITextPosition *newPos = [textField positionFromPosition:textField.beginningOfDocument offset:offset];</div><div class="line">            textField.selectedTextRange = [textField textRangeFromPosition:newPos toPosition:newPos];</div><div class="line">            return NO;</div><div class="line">        &#125;else&#123;</div><div class="line">            return YES;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    return YES;</div><div class="line">    </div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">- (NSString*)_parseString:(NSString*)string&#123;</div><div class="line">    </div><div class="line">    if (!string) &#123;</div><div class="line">        return nil;</div><div class="line">    &#125;</div><div class="line">    NSMutableString* mStr = [NSMutableString stringWithString:[string stringByReplacingOccurrencesOfString:placeholder withString:@&quot;&quot;]];</div><div class="line">    if (mStr.length &gt;3) &#123;</div><div class="line">        [mStr insertString:placeholder atIndex:3];</div><div class="line">    &#125;if (mStr.length &gt; 8) &#123;</div><div class="line">        [mStr insertString:placeholder atIndex:8];</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    return  mStr;</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line">/** 获取正常电话号码（去掉空格） */</div><div class="line">- (NSString*)_noneSpaseString:(NSString*)string&#123;</div><div class="line">    </div><div class="line">    return [string stringByReplacingOccurrencesOfString:placeholder withString:@&quot;&quot;];</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line">- (BOOL)_isNum:(NSString *)checkedNumString &#123;</div><div class="line">    </div><div class="line">    if (!checkedNumString) &#123;</div><div class="line">        return NO;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    checkedNumString = [checkedNumString stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];</div><div class="line">    </div><div class="line">    if(checkedNumString.length &gt; 0) &#123;</div><div class="line">        return NO;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    return YES;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>###封装方法</p>
+<p>需要实现的代码就是要这么多，但这些代码写在ViewController显得太臃肿了，所以我对代码进行了封装:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">//</div><div class="line">//  BYPhoneNumTF.h</div><div class="line">//</div><div class="line">//  Created by BY on 16/12/2.</div><div class="line">//  Copyright © 2016年 BY. All rights reserved.</div><div class="line">//  电话号码类型的文本输入框，且只能输入数字</div><div class="line">//  输入显示：137 9922 1234 或 137-9922-1234</div><div class="line">//  使用方法：在XIB中的TextField继承该类即可</div><div class="line">//  修改占位符placeholder即可改变样式</div><div class="line"></div><div class="line">#import &lt;UIKit/UIKit.h&gt;</div><div class="line"></div><div class="line">// @&quot; &quot; or @&quot;-&quot;</div><div class="line">#define placeholder @&quot; &quot;</div><div class="line"></div><div class="line">@interface BYPhoneNumTF : UITextField</div><div class="line"></div><div class="line">/** 去掉格式的电话号码 */</div><div class="line">@property (nonatomic, strong) NSString *plainPhoneNum;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div></pre></td><td class="code"><pre><div class="line">//</div><div class="line">//  BYPhoneNumTF.m</div><div class="line">//  dev-Jack</div><div class="line">//</div><div class="line">//  Created by BY on 16/12/2.</div><div class="line">//  Copyright © 2016年 Jack. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">#import &quot;BYPhoneNumTF.h&quot;</div><div class="line"></div><div class="line"></div><div class="line">@interface BYPhoneNumTF ()&lt;UITextFieldDelegate&gt;</div><div class="line"></div><div class="line">@end</div><div class="line"></div><div class="line">@implementation BYPhoneNumTF</div><div class="line"></div><div class="line">- (NSString *)plainPhoneNum &#123;</div><div class="line">    return [self _noneSpaseString:self.text];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)awakeFromNib &#123;</div><div class="line">    [super awakeFromNib];</div><div class="line">    self.delegate = self;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string &#123;</div><div class="line"></div><div class="line">    NSString *phStr = placeholder;</div><div class="line">    unichar phChar = &apos; &apos;;</div><div class="line">    if (phStr.length) &#123;</div><div class="line">        phChar = [phStr characterAtIndex:0];</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    if (textField) &#123;</div><div class="line">        NSString* text = textField.text;</div><div class="line">        //删除</div><div class="line">        if([string isEqualToString:@&quot;&quot;])&#123;</div><div class="line">            </div><div class="line">            //删除一位</div><div class="line">            if(range.length == 1)&#123;</div><div class="line">                //最后一位,遇到空格则多删除一次</div><div class="line">                if (range.location == text.length - 1 ) &#123;</div><div class="line">                    if ([text characterAtIndex:text.length - 1] == phChar) &#123;</div><div class="line">                        [textField deleteBackward];</div><div class="line">                    &#125;</div><div class="line">                    return YES;</div><div class="line">                &#125;</div><div class="line">                //从中间删除</div><div class="line">                else&#123;</div><div class="line">                    NSInteger offset = range.location;</div><div class="line">                    </div><div class="line">                    if (range.location &lt; text.length &amp;&amp; [text characterAtIndex:range.location] == phChar &amp;&amp; [textField.selectedTextRange isEmpty]) &#123;</div><div class="line">                        [textField deleteBackward];</div><div class="line">                        offset --;</div><div class="line">                    &#125;</div><div class="line">                    [textField deleteBackward];</div><div class="line">                    textField.text = [self _parseString:textField.text];</div><div class="line">                    UITextPosition *newPos = [textField positionFromPosition:textField.beginningOfDocument offset:offset];</div><div class="line">                    textField.selectedTextRange = [textField textRangeFromPosition:newPos toPosition:newPos];</div><div class="line">                    return NO;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            else if (range.length &gt; 1) &#123;</div><div class="line">                BOOL isLast = NO;</div><div class="line">                //如果是从最后一位开始</div><div class="line">                if(range.location + range.length == textField.text.length )&#123;</div><div class="line">                    isLast = YES;</div><div class="line">                &#125;</div><div class="line">                [textField deleteBackward];</div><div class="line">                textField.text = [self _parseString:textField.text];</div><div class="line">                </div><div class="line">                NSInteger offset = range.location;</div><div class="line">                if (range.location == 3 || range.location  == 8) &#123;</div><div class="line">                    offset ++;</div><div class="line">                &#125;</div><div class="line">                if (isLast) &#123;</div><div class="line">                    //光标直接在最后一位了</div><div class="line">                &#125;else&#123;</div><div class="line">                    UITextPosition *newPos = [textField positionFromPosition:textField.beginningOfDocument offset:offset];</div><div class="line">                    textField.selectedTextRange = [textField textRangeFromPosition:newPos toPosition:newPos];</div><div class="line">                &#125;</div><div class="line">                </div><div class="line">                return NO;</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            else&#123;</div><div class="line">                return YES;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        else if(string.length &gt;0)&#123;</div><div class="line">            </div><div class="line">            //限制输入字符个数</div><div class="line">            if (([self _noneSpaseString:textField.text].length + string.length - range.length &gt; 11) ) &#123;</div><div class="line">                return NO;</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            //判断是否是纯数字(搜狗，百度输入法，数字键盘居然可以输入其他字符)</div><div class="line">            if(![self _isNum:string])&#123;</div><div class="line">                return NO;</div><div class="line">            &#125;</div><div class="line">            [textField insertText:string];</div><div class="line">            textField.text = [self _parseString:textField.text];</div><div class="line">            </div><div class="line">            NSInteger offset = range.location + string.length;</div><div class="line">            if (range.location == 3 || range.location  == 8) &#123;</div><div class="line">                offset ++;</div><div class="line">            &#125;</div><div class="line">            UITextPosition *newPos = [textField positionFromPosition:textField.beginningOfDocument offset:offset];</div><div class="line">            textField.selectedTextRange = [textField textRangeFromPosition:newPos toPosition:newPos];</div><div class="line">            return NO;</div><div class="line">        &#125;else&#123;</div><div class="line">            return YES;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    return YES;</div><div class="line">    </div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">- (NSString*)_parseString:(NSString*)string&#123;</div><div class="line">    </div><div class="line">    if (!string) &#123;</div><div class="line">        return nil;</div><div class="line">    &#125;</div><div class="line">    NSMutableString* mStr = [NSMutableString stringWithString:[string stringByReplacingOccurrencesOfString:placeholder withString:@&quot;&quot;]];</div><div class="line">    if (mStr.length &gt;3) &#123;</div><div class="line">        [mStr insertString:placeholder atIndex:3];</div><div class="line">    &#125;if (mStr.length &gt; 8) &#123;</div><div class="line">        [mStr insertString:placeholder atIndex:8];</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    return  mStr;</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line">/** 获取正常电话号码（去掉空格） */</div><div class="line">- (NSString*)_noneSpaseString:(NSString*)string&#123;</div><div class="line">    </div><div class="line">    return [string stringByReplacingOccurrencesOfString:placeholder withString:@&quot;&quot;];</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line">- (BOOL)_isNum:(NSString *)checkedNumString &#123;</div><div class="line">    </div><div class="line">    if (!checkedNumString) &#123;</div><div class="line">        return NO;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    checkedNumString = [checkedNumString stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];</div><div class="line">    </div><div class="line">    if(checkedNumString.length &gt; 0) &#123;</div><div class="line">        return NO;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    return YES;</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><p>在storyboard中的<code>TextField</code>控件的Calss类型选择该类<code>BYPhoneNumTF</code>即可。</p>
+<p>代码及Demo下载地址：<a href="https://github.com/qiubaiying/BYPhoneNumTF" target="_blank" rel="external">BYPhoneNumTF</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/轮子/" rel="tag"># 轮子</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/06/2016-01-06-ReactiveCocoa-进阶/" rel="next" title="ReactiveCocoa 进阶">
+                <i class="fa fa-chevron-left"></i> ReactiveCocoa 进阶
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/04/2017-02-04-Hello-2017/" rel="prev" title="Hello 2017">
+                Hello 2017 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          
+            <img class="site-author-image" itemprop="image"
+              src="/images/avatar.png"
+              alt="JimmyZhao" />
+          
+            <p class="site-author-name" itemprop="name">JimmyZhao</p>
+            <p class="site-description motion-element" itemprop="description">Jimmy | iOS | develop | 移动</p>
+        </div>
+
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">45</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">40</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/JimmyZDD" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#功能"><span class="nav-number">1.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#效果："><span class="nav-number">2.</span> <span class="nav-text">效果：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现方法"><span class="nav-number">3.</span> <span class="nav-text">实现方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用方法"><span class="nav-number">4.</span> <span class="nav-text">使用方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JimmyZhao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.2</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
